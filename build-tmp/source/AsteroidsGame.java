@@ -16,6 +16,7 @@ public class AsteroidsGame extends PApplet {
 
 SpaceShip dude;
 Star[] popStar;
+Asteroid[] rockLobster;
 public void setup() 
 {
   size(750,750);
@@ -24,6 +25,12 @@ public void setup()
   for (int i = 1; i < popStar.length; i++)
   {
     popStar[i] = new Star();
+  }
+  rockLobster = new Asteroid[10];
+  for (int r = 1; r < rockLobster.length; r++)
+  {
+    rockLobster[r] = new Asteroid();
+    rockLobster[r].accelerate(5);
   }
 }
 public void draw() 
@@ -34,6 +41,12 @@ public void draw()
   for(int a = 1; a <popStar.length; a++)
   {
     popStar[a].show();
+  }
+  for (int r = 1; r < rockLobster.length; r++)
+  {
+    rockLobster[r].show();
+    rockLobster[r].rotate(5);
+    rockLobster[r].move();
   }
 }
 public void keyPressed()
@@ -76,6 +89,39 @@ class Star
     ellipse(myX, myY, 1,1);
   }
 }
+class Asteroid extends Floater
+{
+  public Asteroid()
+  {
+      corners = 4;
+      xCorners = new int[corners];
+      yCorners = new int[corners];
+      xCorners[0] = -15;
+      yCorners[0] = -15;
+      xCorners[1] = -15;
+      yCorners[1] = 15;
+      xCorners[2] = 15;
+      yCorners[2] = 15;
+      xCorners[3] = 15;
+      yCorners[3] = -15;
+      myColor = 255;
+      myCenterX = ((int)(Math.random()*width));
+      myCenterY = ((int)(Math.random()*height));
+      myDirectionX = 0;
+      myDirectionY = 0;
+      myPointDirection = ((int)(Math.random()*360));
+  }
+  public void setX(int x){myCenterX = x;}  
+  public int getX(){return (int)myCenterX;}   
+  public void setY(int y){myCenterY = y;}   
+  public int getY(){return (int)myCenterY;}   
+  public void setDirectionX(double x){myDirectionX = x;}   
+  public double getDirectionX(){return (int)myDirectionX;}   
+  public void setDirectionY(double y){myDirectionY = y;}   
+  public double getDirectionY(){return (int)myDirectionY;}   
+  public void setPointDirection(int degrees){myPointDirection = degrees;}   
+  public double getPointDirection(){return (int)myPointDirection;} 
+}
 
 class SpaceShip extends Floater  
 {   
@@ -108,7 +154,7 @@ class SpaceShip extends Floater
   public void setPointDirection(int degrees){myPointDirection = degrees;}   
   public double getPointDirection(){return (int)myPointDirection;} 
 }
-abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
+abstract class Floater  
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
   protected int[] xCorners;   
