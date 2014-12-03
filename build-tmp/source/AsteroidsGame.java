@@ -16,7 +16,7 @@ public class AsteroidsGame extends PApplet {
 
 SpaceShip dude;
 Star[] popStar;
-Asteroid[] rockLobster;
+ArrayList <Asteroid> rockLobster;
 public void setup() 
 {
   size(750,750);
@@ -26,12 +26,17 @@ public void setup()
   {
     popStar[i] = new Star();
   }
-  rockLobster = new Asteroid[10];
-  for (int r = 1; r < rockLobster.length; r++)
-  {
-    rockLobster[r] = new Asteroid();
-    rockLobster[r].accelerate(5);
-  }
+  rockLobster = new ArrayList <Asteroid>();
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
+  rockLobster.add(new Asteroid());
 }
 public void draw() 
 {
@@ -42,47 +47,53 @@ public void draw()
   {
     popStar[a].show();
   }
-  for (int r = 1; r < rockLobster.length; r++)
+  for (int r = 0; r < rockLobster.size(); r++)
   {
-    rockLobster[r].show();
-    rockLobster[r].rotate(5);
-    rockLobster[r].move();
+    rockLobster.get(r).show();
+    rockLobster.get(r).rotate(5);
+    rockLobster.get(r).move();
+    //rockLobster.get(r).setPointDirection((int)Math.random()*360);
+    double d = dist(dude.getX(), dude.getY(), rockLobster.get(r).getX(), rockLobster.get(r).getY());
+    if(d < 25)
+    {
+      rockLobster.remove(r);
+    }
   }
 }
 public void keyPressed()
-{
-  if(key == 'a')
-  {
-    dude.accelerate(-0.5f);
-  }
-  if(key == 'd')
-  {
-    dude.accelerate(0.5f);
-  }
-  if(key == 'k')
-  {
-    dude.rotate(8);
-  }
-  if(key == 'l')
-  {
-    dude.rotate(-8);
-  }
-  if(key == 'h')
-  {
-    dude.setX((int)(Math.random()*width));
-    dude.setY((int)(Math.random()*height));
-    dude.setDirectionX(0);
-    dude.setDirectionY(0);
-    dude.setPointDirection((int)(Math.random()*360));
-  }
-}
-class Star
-{
-  private int myX, myY, myColor;
-  public Star()
-  {
-    myX = (int)(Math.random()*750);
-    myY = (int)(Math.random()*750);
+{                                       
+  if(key == 'a')                                       
+  {                                       
+    dude.accelerate(-0.5f);                                       
+  }                                       
+  if(key == 'd')                                       
+  {                                       
+    dude.accelerate(0.5f);                                       
+  }                                       
+  if(key == 'k')                                       
+  {                                       
+    dude.rotate(8);                                       
+  }                                       
+  if(key == 'l')                                       
+  {                                       
+    dude.rotate(-8);                                       
+  }                                       
+  if(key == 'h')                                       
+  {                                       
+    dude.setX((int)(Math.random()*width));                                       
+    dude.setY((int)(Math.random()*height));                                       
+    dude.setDirectionX(0);                                       
+    dude.setDirectionY(0);                                       
+    dude.setPointDirection((int)(Math.random()*360));                                       
+  }                                       
+}                                       
+class Star                                       
+{                                       
+  private int myX, myY, myColor;                                       
+  public Star()                                       
+  {                                       
+    myX = (int)(Math.random()*750);                                       
+    myY = (int)(Math.random()*750);                                       
   }
   public void show()
   {
@@ -107,8 +118,8 @@ class Asteroid extends Floater
       myColor = 255;
       myCenterX = ((int)(Math.random()*width));
       myCenterY = ((int)(Math.random()*height));
-      myDirectionX = 0;
-      myDirectionY = 0;
+      myDirectionX = ((int)(Math.random()*10)-5);
+      myDirectionY = ((int)(Math.random()*10)-5);
       myPointDirection = ((int)(Math.random()*360));
   }
   public void setX(int x){myCenterX = x;}  
