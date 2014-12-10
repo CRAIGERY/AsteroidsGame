@@ -1,6 +1,7 @@
 SpaceShip dude;
 Star[] popStar;
 ArrayList <Asteroid> rockLobster;
+ArrayList <Bullet> dirtyDan;
 public void setup() 
 {
   size(750,750);
@@ -21,6 +22,7 @@ public void setup()
   rockLobster.add(new Asteroid());
   rockLobster.add(new Asteroid());
   rockLobster.add(new Asteroid());
+  dirtyDan = new ArrayList <Bullet>();
 }
 public void draw() 
 {
@@ -36,10 +38,19 @@ public void draw()
     rockLobster.get(r).show();
     rockLobster.get(r).rotate(5);
     rockLobster.get(r).move();
-    double d = dist(dude.getX(), dude.getY(), rockLobster.get(r).getX(), rockLobster.get(r).getY());
-    if(d < 25)
+  }
+  for(int g = 0; g < dirtyDan.size(); g++)
+  {
+    dirtyDan.get(g).show();
+    dirtyDan.get(g).move();
+    for (int r = 0; r < rockLobster.size(); r++)
     {
-      rockLobster.remove(r);
+      if(dist(dirtyDan.get(g).getX(), dirtyDan.get(g).getY(), rockLobster.get(r).getX(), rockLobster.get(r).getY()) < 25)
+      {
+        rockLobster.remove(r);
+        dirtyDan.remove(g);
+        break;
+      }
     }
   }
 }
@@ -68,7 +79,11 @@ public void keyPressed()
     dude.setDirectionX(0);                                       
     dude.setDirectionY(0);                                       
     dude.setPointDirection((int)(Math.random()*360));                                       
-  }                                       
+  } 
+  if(key == 's')
+  {
+    dirtyDan.add(new Bullet(dude));
+  }                                      
 }                                       
 class Star                                       
 {                                       
@@ -147,6 +162,32 @@ class SpaceShip extends Floater
   public double getDirectionY(){return (int)myDirectionY;}   
   public void setPointDirection(int degrees){myPointDirection = degrees;}   
   public double getPointDirection(){return (int)myPointDirection;} 
+}
+class Bullet extends Floater
+{
+  public Bullet(SpaceShip theShip)
+  {
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    double dRadians = myPointDirection*(Math.PI/180);
+    myDirectionX = 5*Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY = 5*Math.sin(dRadians) + theShip.getDirectionY();
+  }
+  public void show()
+  {
+    ellipse((float)myCenterX, (float)myCenterY, 10,10);
+  }
+  public void setX(int x){myCenterX = x;}  
+  public int getX(){return (int)myCenterX;}   
+  public void setY(int y){myCenterY = y;}   
+  public int getY(){return (int)myCenterY;}   
+  public void setDirectionX(double x){myDirectionX = x;}   
+  public double getDirectionX(){return (int)myDirectionX;}   
+  public void setDirectionY(double y){myDirectionY = y;}   
+  public double getDirectionY(){return (int)myDirectionY;}   
+  public void setPointDirection(int degrees){myPointDirection = degrees;}   
+  public double getPointDirection(){return (int)myPointDirection;}
 }
 abstract class Floater  
 {   
